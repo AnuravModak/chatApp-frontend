@@ -41,7 +41,7 @@ const WelcomePage = () => {
               navigate("/chat", {
                 state: { 
                   username: user.username,
-                  senderId: "9dd8145f-e40d-4e3e-87af-eeb149a169eb",
+                  senderId: "f3d85e72-12fb-463f-a341-8f3c1784d63e",
                   receiverId: user.id,
                 } 
               });
