@@ -1,15 +1,18 @@
 // WelcomePage.js
 import React, { useEffect, useState } from "react";
-import { fetchUsers } from "../Routers/api"; // Ensure correct path to your API file
+import { fetchUsers } from "../Routers/api"; 
 import { List, ListItem, ListItemText, CircularProgress, Alert, Box, Typography } from "@mui/material";
-import { useNavigate } from "react-router-dom"; // Import the useNavigate hook
-import "../Styles/WelcomePage.css"; // Import custom CSS file for additional styling
+import { useNavigate } from "react-router-dom";
+import "../Styles/WelcomePage.css";
 
 const WelcomePage = () => {
   const [users, setUsers] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
-  const navigate = useNavigate(); // Use navigate to programmatically navigate to another page
+  const navigate = useNavigate();
+
+  // Get the senderId from localStorage
+  const senderId = localStorage.getItem("senderId");
 
   useEffect(() => {
     fetchUsers()
@@ -23,8 +26,8 @@ const WelcomePage = () => {
       });
   }, []);
 
-  if (loading) return <CircularProgress />; // MUI CircularProgress for loading state
-  if (error) return <Alert severity="error">{error}</Alert>; // MUI Alert for error handling
+  if (loading) return <CircularProgress />;
+  if (error) return <Alert severity="error">{error}</Alert>;
 
   return (
     <Box sx={{ padding: 3, textAlign: "center" }}>
@@ -41,7 +44,7 @@ const WelcomePage = () => {
               navigate("/chat", {
                 state: { 
                   username: user.username,
-                  senderId: "f3d85e72-12fb-463f-a341-8f3c1784d63e",
+                  senderId, // Use the senderId from localStorage
                   receiverId: user.id,
                 } 
               });

@@ -8,7 +8,6 @@ export const WebSocketProvider = ({ children }) => {
   const [stompClient, setStompClient] = useState(null);
   const [onlineUsers, setOnlineUsers] = useState(new Map());  // Track online users
   const [typingStatus, setTypingStatus] = useState(new Map()); // Track typing status
-  const [readReceipts, setReadReceipts] = useState(new Set()); // Track read messages
 
   useEffect(() => {
     const socket = new SockJS("http://localhost:8080/chat");
@@ -29,11 +28,6 @@ export const WebSocketProvider = ({ children }) => {
           const { senderId, typingStatus } = JSON.parse(message.body);
           setTypingStatus((prev) => new Map(prev).set(senderId, typingStatus));
         });
-
-        // Subscribe to read receipts
-        client.subscribe("/user/queue/read-receipts", (message) => {
-          setReadReceipts((prev) => new Set(prev).add(message.body));
-        });
       },
       onDisconnect: () => console.log("Disconnected from WebSocket"),
     });
@@ -49,7 +43,7 @@ export const WebSocketProvider = ({ children }) => {
   }, []);
 
   return (
-    <WebSocketContext.Provider value={{ stompClient, onlineUsers, typingStatus, readReceipts }}>
+    <WebSocketContext.Provider value={{ stompClient, onlineUsers, typingStatus }}>
       {children}
     </WebSocketContext.Provider>
   );
